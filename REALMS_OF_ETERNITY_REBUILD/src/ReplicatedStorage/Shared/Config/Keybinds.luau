@@ -8,7 +8,12 @@ export type BindDef = { Action: string, Label: string, Default: string, Group: s
 
 local Binds: { BindDef } = {
 	{ Action = "Light", Label = "Основная атака", Default = "MouseButton1", Group = "Бой" },
-	{ Action = "Secondary", Label = "Блок / прицел / защита", Default = "MouseButton2", Group = "Бой" },
+	{
+		Action = "Secondary",
+		Label = "Блок / прицел / защита",
+		Default = "MouseButton2",
+		Group = "Бой",
+	},
 	{ Action = "Heavy", Label = "Тяжёлая атака", Default = "Z", Group = "Бой" },
 	{ Action = "Skill1", Label = "Способность 1", Default = "Q", Group = "Бой" },
 	{ Action = "Skill2", Label = "Способность 2", Default = "E", Group = "Бой" },

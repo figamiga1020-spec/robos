@@ -195,7 +195,8 @@ function DataSchema.ValidateName(name: string): (boolean, string?)
 		return false, "Имя должно содержать от 3 до 16 символов"
 	end
 	if string.find(name, "^[%s'%-]") or string.find(name, "[%s'%-]$") then
-		return false, "Имя не может начинаться или заканчиваться пробелом или знаком"
+		return false,
+			"Имя не может начинаться или заканчиваться пробелом или знаком"
 	end
 	if string.find(name, "%s%s") then
 		return false, "Слишком много пробелов"

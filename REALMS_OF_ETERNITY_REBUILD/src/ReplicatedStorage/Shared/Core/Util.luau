@@ -44,7 +44,15 @@ function Util.Make(className: string, props: { [string]: any }?, children: { Ins
 end
 
 -- Static decorative part (anchored, no collision by default unless `collide`).
-function Util.Part(parent: Instance, name: string, size: Vector3, cframe: CFrame, color: Color3, material: Enum.Material, collide: boolean?): Part
+function Util.Part(
+	parent: Instance,
+	name: string,
+	size: Vector3,
+	cframe: CFrame,
+	color: Color3,
+	material: Enum.Material,
+	collide: boolean?
+): Part
 	local part = Instance.new("Part")
 	part.Name = name
 	part.Size = size
@@ -125,7 +133,10 @@ end
 function Util.ModelFromPart(part: Instance?): Model?
 	local current = part
 	while current and current ~= Workspace do
-		if current:IsA("Model") and (current:GetAttribute("CombatantId") ~= nil or current:FindFirstChildOfClass("Humanoid")) then
+		if
+			current:IsA("Model")
+			and (current:GetAttribute("CombatantId") ~= nil or current:FindFirstChildOfClass("Humanoid"))
+		then
 			return current
 		end
 		current = current.Parent

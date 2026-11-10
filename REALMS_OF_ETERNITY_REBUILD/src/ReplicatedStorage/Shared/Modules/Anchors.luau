@@ -82,7 +82,8 @@ function Anchors.CreateOnFloor(id: string, ignore: { Instance }?): BasePart?
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
 	local exclude: { Instance } = { container() }
-	for _, item in ignore or {} do
+	local extra: { Instance } = ignore or {}
+	for _, item in extra do
 		table.insert(exclude, item)
 	end
 	params.FilterDescendantsInstances = exclude

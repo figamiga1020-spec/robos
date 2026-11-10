@@ -409,7 +409,10 @@ function CombatService:Query(origin: CFrame, shape: Shape, opts: QueryOptions): 
 		end
 		-- test the feet-level point so tall rigs are not missed by height tolerance
 		local point = c.Root.Position - Vector3.new(0, (c.Root.Size.Y / 2), 0)
-		if Shapes.Contains(shape, origin, point, c.HitRadius) or Shapes.Contains(shape, origin, c.Root.Position, c.HitRadius) then
+		if
+			Shapes.Contains(shape, origin, point, c.HitRadius)
+			or Shapes.Contains(shape, origin, c.Root.Position, c.HitRadius)
+		then
 			if opts.LineOfSight then
 				local params = RaycastParams.new()
 				params.FilterType = Enum.RaycastFilterType.Include
@@ -592,7 +595,8 @@ local function applyKnockback(target: Combatant, velocity: Vector3)
 		Net.FireClient(target.Player, "Knockback", velocity)
 	else
 		local root = target.Root
-		root.AssemblyLinearVelocity = Vector3.new(velocity.X, math.max(root.AssemblyLinearVelocity.Y, velocity.Y), velocity.Z)
+		root.AssemblyLinearVelocity =
+			Vector3.new(velocity.X, math.max(root.AssemblyLinearVelocity.Y, velocity.Y), velocity.Z)
 	end
 end
 
@@ -668,7 +672,7 @@ function CombatService:ApplyDamage(target: Combatant, info: DamageInfo): DamageR
 				target.Stamina = 0
 			end
 			target.Flags.Blocking = false
-			self:ApplyStatus(target, { Id = "Stagger", Duration = 1.2 }, source)
+			self:ApplyStatus(target, { Id = "Stagger", Duration = 1.2 }, source :: any)
 		end
 	end
 
@@ -693,7 +697,8 @@ function CombatService:ApplyDamage(target: Combatant, info: DamageInfo): DamageR
 	if source then
 		target.DamageBy[source.Id] = (target.DamageBy[source.Id] or 0) + amount + result.Absorbed
 		if target.Kind ~= "Player" then
-			target.Threat[source.Id] = (target.Threat[source.Id] or 0) + (amount + result.Absorbed) * ((source.Data.ThreatMult :: number?) or 1)
+			target.Threat[source.Id] = (target.Threat[source.Id] or 0)
+				+ (amount + result.Absorbed) * ((source.Data.ThreatMult :: number?) or 1)
 		end
 	end
 
@@ -707,7 +712,8 @@ function CombatService:ApplyDamage(target: Combatant, info: DamageInfo): DamageR
 				target.Poise = target.MaxPoise
 				local staggerTime = if target.Kind == "Boss" then 2.5 elseif target.Kind == "MiniBoss" then 1.8 else 1.4
 				if target.Kind == "Boss" or target.Kind == "MiniBoss" then
-					target.Statuses.Stagger = { Id = "Stagger", Stacks = 1, Expires = t + staggerTime, NextTick = t + 99, Source = source }
+					target.Statuses.Stagger =
+						{ Id = "Stagger", Stacks = 1, Expires = t + staggerTime, NextTick = t + 99, Source = source }
 					animate(target.Model, "Stagger", { Duration = staggerTime })
 					local interrupt = target.Data.Interrupt
 					if type(interrupt) == "function" then
@@ -715,7 +721,7 @@ function CombatService:ApplyDamage(target: Combatant, info: DamageInfo): DamageR
 					end
 					setAttr(target.Model, "Statuses", statusString(target))
 				else
-					self:ApplyStatus(target, { Id = "Stagger", Duration = staggerTime }, source)
+					self:ApplyStatus(target, { Id = "Stagger", Duration = staggerTime }, source :: any)
 				end
 			end
 		end
@@ -767,7 +773,12 @@ export type DealOptions = {
 }
 
 -- Rolls damage from the source's stats and applies it. Used by every attack in the game.
-function CombatService:DealDamage(source: Combatant, target: Combatant, spec: Types.DamageSpec, opts: DealOptions?): DamageResult
+function CombatService:DealDamage(
+	source: Combatant,
+	target: Combatant,
+	spec: Types.DamageSpec,
+	opts: DealOptions?
+): DamageResult
 	local options: DealOptions = opts or {}
 	local info: DamageInfo = {
 		Amount = 0,
@@ -902,7 +913,9 @@ worldRayParams.FilterType = Enum.RaycastFilterType.Include
 
 function CombatService:FireProjectile(spec: ProjectileSpec): number
 	projectileId += 1
-	local direction = if spec.Direction.Magnitude > 1e-3 then spec.Direction.Unit else spec.Source.Root.CFrame.LookVector
+	local direction = if spec.Direction.Magnitude > 1e-3
+		then spec.Direction.Unit
+		else spec.Source.Root.CFrame.LookVector
 	local live: LiveProjectile = {
 		Id = projectileId,
 		Spec = spec,
@@ -1030,16 +1043,20 @@ local function regenTick(dt: number)
 				local magnitude = (status.Magnitude or 3) * status.Stacks
 				if def.DamageType then
 					local sourceLevel = if status.Source then status.Source.Level else c.Level
-					CombatService:ApplyDamage(c, {
-						Amount = magnitude * (1 + 0.15 * (sourceLevel - 1)),
-						Type = def.DamageType :: any,
-						Source = status.Source,
-						CanBlock = false,
-						CanParry = false,
-						CanDodge = false,
-						Ability = id,
-						Tags = { DoT = true },
-					})
+					local service: any = CombatService
+					service:ApplyDamage(
+						c,
+						{
+							Amount = magnitude * (1 + 0.15 * (sourceLevel - 1)),
+							Type = def.DamageType :: any,
+							Source = status.Source,
+							CanBlock = false,
+							CanParry = false,
+							CanDodge = false,
+							Ability = id,
+							Tags = { DoT = true },
+						} :: DamageInfo
+					)
 					if c.Dead then
 						break
 					end

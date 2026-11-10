@@ -201,7 +201,11 @@ local function sectionData(session: Session, section: string): any
 	elseif section == "Quests" then
 		return character.Quests
 	elseif section == "World" then
-		return { Discovered = character.World.Discovered, Flags = character.World.Flags, Waystone = character.World.Waystone }
+		return {
+			Discovered = character.World.Discovered,
+			Flags = character.World.Flags,
+			Waystone = character.World.Waystone,
+		}
 	end
 	return nil
 end
@@ -351,7 +355,7 @@ function DataService:Save(player: Player, reason: string?, force: boolean?): boo
 	snapshot.SessionLock = { JobId = game.JobId, Time = os.time() }
 	local lostLock = false
 	local ok = withRetries(`save {player.UserId} ({reason or "manual"})`, function()
-		return store:UpdateAsync(keyFor(player.UserId), function(current: any)
+		return store:UpdateAsync(keyFor(player.UserId), function(current: any): any
 			if current and current.SessionLock and current.SessionLock.JobId ~= game.JobId then
 				lostLock = true
 				return nil -- another server owns this profile now; never overwrite it
@@ -377,7 +381,7 @@ local function release(player: Player)
 		local snapshot = DataSchema.DeepCopy(serialize(session))
 		snapshot.SessionLock = nil
 		withRetries(`release {player.UserId}`, function()
-			return store:UpdateAsync(keyFor(player.UserId), function(current: any)
+			return store:UpdateAsync(keyFor(player.UserId), function(current: any): any
 				if current and current.SessionLock and current.SessionLock.JobId ~= game.JobId then
 					return nil
 				end
@@ -398,9 +402,14 @@ local function load(player: Player)
 	for attempt = 1, LOCK_RETRIES do
 		local blocked = false
 		local ok, result = withRetries(`load {player.UserId}`, function()
-			return store:UpdateAsync(keyFor(player.UserId), function(current: any)
+			return store:UpdateAsync(keyFor(player.UserId), function(current: any): any
 				local lock = current and current.SessionLock
-				if lock and lock.JobId ~= game.JobId and os.time() - (lock.Time or 0) < LOCK_STALE_SECONDS and attempt < LOCK_RETRIES then
+				if
+					lock
+					and lock.JobId ~= game.JobId
+					and os.time() - (lock.Time or 0) < LOCK_STALE_SECONDS
+					and attempt < LOCK_RETRIES
+				then
 					blocked = true
 					return nil
 				end
@@ -436,7 +445,9 @@ local function load(player: Player)
 		return
 	end
 	if type(profile) ~= "table" then
-		player:Kick("Не удалось загрузить данные персонажа. Пожалуйста, перезайдите — ваш прогресс в безопасности.")
+		player:Kick(
+			"Не удалось загрузить данные персонажа. Пожалуйста, перезайдите — ваш прогресс в безопасности."
+		)
 		return
 	end
 
@@ -473,7 +484,9 @@ end
 function DataService:Init()
 	resolveStore()
 	if usingMock then
-		print("[DataService] Using MockDataStore (Studio). Set ServerStorage.UseLiveDataStore = true to test real saves.")
+		print(
+			"[DataService] Using MockDataStore (Studio). Set ServerStorage.UseLiveDataStore = true to test real saves."
+		)
 	end
 
 	Net.HandleInvoke("RequestState", { Rate = { 5, 1 } }, function(player)
@@ -482,7 +495,9 @@ function DataService:Init()
 			return nil
 		end
 		local result = {}
-		for _, section in { "Account", "Settings", "Bank", "Character", "Inventory", "Equipment", "Hotbar", "Quests", "World" } do
+		for _, section in
+			{ "Account", "Settings", "Bank", "Character", "Inventory", "Equipment", "Hotbar", "Quests", "World" }
+		do
 			result[section] = sectionData(session, section)
 		end
 		return result
