@@ -1,0 +1,7 @@
+# Toolchain used to build and verify this project (`rokit install`, or scripts/setup-tools.sh on Linux)
+[tools]
+rojo = "rojo-rbx/rojo@7.7.1"
+selene = "Kampfkarren/selene@0.32.0"
+stylua = "JohnnyMorganz/StyLua@2.6.0"
+lune = "lune-org/lune@0.11.1"
+luau-lsp = "JohnnyMorganz/luau-lsp@1.70.1"
