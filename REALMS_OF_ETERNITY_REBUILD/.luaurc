@@ -1,0 +1,5 @@
+{
+  "languageMode": "strict",
+  "lint": { "*": true, "LocalShadow": false, "FunctionUnused": false },
+  "lintErrors": false
+}

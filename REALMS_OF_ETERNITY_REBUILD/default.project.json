@@ -1,0 +1,141 @@
+{
+  "name": "REALMS_OF_ETERNITY_REBUILD",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$path": "src/ReplicatedStorage/Shared"
+      }
+    },
+    "ServerScriptService": {
+      "$path": "src/ServerScriptService"
+    },
+    "ServerStorage": {
+      "$className": "ServerStorage"
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$properties": {
+        "CameraMaxZoomDistance": 42,
+        "CameraMinZoomDistance": 6,
+        "CharacterWalkSpeed": 16,
+        "CharacterUseJumpPower": false,
+        "CharacterJumpHeight": 7.5,
+        "CharacterMaxSlopeAngle": 52,
+        "LoadCharacterAppearance": false,
+        "EnableMouseLockOption": false,
+        "DevComputerCameraMovementMode": "Classic"
+      },
+      "StarterPlayerScripts": {
+        "$path": "src/StarterPlayer/StarterPlayerScripts"
+      },
+      "StarterCharacterScripts": {
+        "$className": "StarterCharacterScripts"
+      }
+    },
+    "StarterGui": {
+      "$className": "StarterGui",
+      "$properties": {
+        "ResetPlayerGuiOnSpawn": false,
+        "ShowDevelopmentGui": false
+      }
+    },
+    "Players": {
+      "$className": "Players",
+      "$properties": {
+        "CharacterAutoLoads": false,
+        "MaxPlayers": 30,
+        "RespawnTime": 6
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "Technology": "Future",
+        "ClockTime": 15.2,
+        "GeographicLatitude": 38,
+        "Brightness": 2.6,
+        "EnvironmentDiffuseScale": 0.6,
+        "EnvironmentSpecularScale": 0.7,
+        "GlobalShadows": true,
+        "ShadowSoftness": 0.35,
+        "Ambient": [0.27, 0.27, 0.3],
+        "OutdoorAmbient": [0.5, 0.5, 0.55],
+        "ExposureCompensation": 0.1
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.32,
+          "Offset": 0.18,
+          "Color": [0.78, 0.81, 0.82],
+          "Decay": [0.42, 0.47, 0.5],
+          "Glare": 0.25,
+          "Haze": 1.4
+        }
+      },
+      "Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Intensity": 0.55,
+          "Size": 26,
+          "Threshold": 1.4
+        }
+      },
+      "ColorGrade": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Brightness": 0.02,
+          "Contrast": 0.08,
+          "Saturation": 0.06,
+          "TintColor": [1.0, 0.98, 0.95]
+        }
+      },
+      "SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Intensity": 0.06,
+          "Spread": 0.7
+        }
+      },
+      "Depth": {
+        "$className": "DepthOfFieldEffect",
+        "$properties": {
+          "Enabled": true,
+          "FarIntensity": 0.12,
+          "FocusDistance": 60,
+          "InFocusRadius": 90,
+          "NearIntensity": 0
+        }
+      }
+    },
+    "SoundService": {
+      "$className": "SoundService",
+      "$properties": {
+        "AmbientReverb": "NoReverb",
+        "RespectFilteringEnabled": true
+      }
+    },
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": {
+        "StreamingEnabled": true,
+        "StreamingMinRadius": 160,
+        "StreamingTargetRadius": 900,
+        "Gravity": 196.2
+      },
+      "Terrain": {
+        "$className": "Terrain",
+        "$properties": {
+          "WaterColor": [0.16, 0.36, 0.36],
+          "WaterReflectance": 0.4,
+          "WaterTransparency": 0.55,
+          "WaterWaveSize": 0.12,
+          "WaterWaveSpeed": 8,
+          "Decoration": true
+        }
+      }
+    }
+  }
+}
